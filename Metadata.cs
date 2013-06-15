@@ -10,26 +10,31 @@ namespace X.Web
     public class Metadata
     {
         public String Title { get; set; }
+
+        public String DefaultDescription { get; set; }
+        public String DefaultKeywords { get; set; }
+
         public String WebsiteUrl { get; set; }
-        public String WebsiteDirectory { get; set; }
-        public String WebsiteDefaultDescription { get; set; }
-        public String WebsiteDefaultKeywords { get; set; }
-        public String UploadFilesDirectoryPath { get; set; }
-        public String UploadFilesDirectoryUrl { get; set; }
+        public String WebsiteStorageConnectionString { get; set; }
+
+        public String FileStorageUrl { get; set; }
+        public String FileStorageConnectionString { get; set; }
+
         public String FacebookLogo { get; set; }
         public String FacebookApplicationId { get; set; }
         public String FacebookApplicationSecret { get; set; }
+
         public String SmtpHost { get; set; }
         public int SmtpPort { get; set; }
         public String MailFrom { get; set; }
         public String MailUserName { get; set; }
         public String MailPassword { get; set; }
-        
+
         public Metadata()
         {
             SmtpPort = 25;
         }
-        
+
         private static Metadata _current;
 
         public static Metadata Current
@@ -68,11 +73,11 @@ namespace X.Web
                 {
                     Title = GetField(configuration, "Title", String.Empty),
                     WebsiteUrl = GetField(configuration, "WebsiteUrl", String.Empty),
-                    WebsiteDirectory = GetField(configuration, "WebsiteDirectory", String.Empty),
-                    WebsiteDefaultDescription = GetField(configuration, "WebsiteDefaultDescription", String.Empty),
-                    WebsiteDefaultKeywords = GetField(configuration, "WebsiteDefaultKeywords", String.Empty),
-                    UploadFilesDirectoryPath = GetField(configuration, "UploadFilesDirectoryPath", String.Empty),
-                    UploadFilesDirectoryUrl = GetField(configuration, "UploadFilesDirectoryUrl", String.Empty),
+                    WebsiteStorageConnectionString = GetField(configuration, "WebsiteStorageConnectionString", String.Empty),
+                    DefaultDescription = GetField(configuration, "DefaultDescription", String.Empty),
+                    DefaultKeywords = GetField(configuration, "DefaultKeywords", String.Empty),
+                    FileStorageConnectionString = GetField(configuration, "FileStorageConnectionString", String.Empty),
+                    FileStorageUrl = GetField(configuration, "FileStorageUrl", String.Empty),
                     FacebookLogo = GetField(configuration, "FacebookLogo", String.Empty),
                     FacebookApplicationId = GetField(configuration, "FacebookApplicationId", String.Empty),
                     FacebookApplicationSecret = GetField(configuration, "FacebookApplicationSecret", String.Empty),
@@ -86,7 +91,7 @@ namespace X.Web
 
             return metaData;
         }
-        
+
         #region GetField
 
         private static int GetField(XDocument configuration, string fieldName, int defaultValue)
@@ -94,7 +99,7 @@ namespace X.Web
             int result;
             return int.TryParse(GetField(configuration, fieldName, defaultValue.ToString()), out result) ? result : defaultValue;
         }
-        
+
         private static string GetField(XDocument document, string fieldName, string defaultValue)
         {
             try
