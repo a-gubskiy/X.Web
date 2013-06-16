@@ -15,7 +15,6 @@ namespace X.Web
         public String DefaultKeywords { get; set; }
 
         public String WebsiteUrl { get; set; }
-        public String WebsiteStorageConnectionString { get; set; }
 
         public String FileStorageUrl { get; set; }
         public String FileStorageConnectionString { get; set; }
@@ -73,7 +72,6 @@ namespace X.Web
                 {
                     Title = GetField(configuration, "Title", String.Empty),
                     WebsiteUrl = GetField(configuration, "WebsiteUrl", String.Empty),
-                    WebsiteStorageConnectionString = GetField(configuration, "WebsiteStorageConnectionString", String.Empty),
                     DefaultDescription = GetField(configuration, "DefaultDescription", String.Empty),
                     DefaultKeywords = GetField(configuration, "DefaultKeywords", String.Empty),
                     FileStorageConnectionString = GetField(configuration, "FileStorageConnectionString", String.Empty),
