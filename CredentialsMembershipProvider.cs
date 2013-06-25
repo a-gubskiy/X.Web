@@ -71,8 +71,8 @@ namespace X.Web.Security
         {
             if (_users == null)
             {
-                AuthenticationSection section = GetAuthenticationSection();
-                FormsAuthenticationCredentials creds = section.Forms.Credentials;
+                var section = GetAuthenticationSection();
+                var creds = section.Forms.Credentials;
                 _users = section.Forms.Credentials.Users;
             }
 
