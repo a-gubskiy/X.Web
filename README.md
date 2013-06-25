@@ -2,6 +2,7 @@ X.Web.Security.CredentialsMembershipProvider
 ============================================
 
 Membership provider that allow load user information from web.config file.
+
 Inspired by http://leastprivilege.com/2005/07/27/asp-net-membershipprovider-for-web-config/
 
 Example
