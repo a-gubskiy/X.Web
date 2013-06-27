@@ -1,65 +1,17 @@
 ﻿using System;
-using System.Configuration;
-using System.Linq;
 using System.Web.Configuration;
 using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace X.Web.Security
 {
-    public class CredentialsMembershipProvider : MembershipProvider
+    public class CredentialsMembershipProvider : ExtendedMembershipProvider //MembershipProvider, 
     {
         private FormsAuthenticationUserCollection _users;
         private FormsAuthPasswordFormat _passwordFormat;
 
         public const string ProviderName = "CredentialsMembershipProvider";
-
-        public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
-        {
-            base.Initialize(name, config);
-            _passwordFormat = GetPasswordFormat();
-        }
-
-        public override MembershipUser GetUser(string username, bool userIsOnline)
-        {
-            var user = GetUser(username);
-
-            return CreateMembershipUser(user);
-        }
-
-        private static MembershipUser CreateMembershipUser(FormsAuthenticationUser user)
-        {
-            return new MembershipUser(ProviderName, user.Name, null, String.Empty, String.Empty, String.Empty, true,
-                                      false, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date,
-                                      DateTime.Now.Date);
-        }
-
-        public override bool ValidateUser(string username, string password)
-        {
-            var user = GetUser(username);
-
-            if (user == null)
-            {
-                return false;
-            }
-
-            if (_passwordFormat == FormsAuthPasswordFormat.Clear)
-            {
-                if (user.Password == password)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if (user.Password == FormsAuthentication.HashPasswordForStoringInConfigFile(password, _passwordFormat.ToString()))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
+        
         private FormsAuthenticationUser GetUser(string username)
         {
             var users = GetUsers();
@@ -89,6 +41,55 @@ namespace X.Web.Security
         {
             var authenticationSection = GetAuthenticationSection();
             return authenticationSection.Forms.Credentials.PasswordFormat;
+        }
+
+        private static MembershipUser CreateMembershipUser(FormsAuthenticationUser user)
+        {
+            return new MembershipUser(ProviderName, user.Name, null, String.Empty, String.Empty, String.Empty, true,
+                                      false, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date,
+                                      DateTime.Now.Date);
+        }
+
+        #region MembershipProvider
+
+        public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
+        {
+            base.Initialize(name, config);
+            _passwordFormat = GetPasswordFormat();
+        }
+
+        public override MembershipUser GetUser(string username, bool userIsOnline)
+        {
+            var user = GetUser(username);
+
+            return CreateMembershipUser(user);
+        }
+
+        public override bool ValidateUser(string username, string password)
+        {
+            var user = GetUser(username);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (_passwordFormat == FormsAuthPasswordFormat.Clear)
+            {
+                if (user.Password == password)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (user.Password == FormsAuthentication.HashPasswordForStoringInConfigFile(password, _passwordFormat.ToString()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public override string ApplicationName { get; set; }
@@ -136,8 +137,8 @@ namespace X.Web.Security
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
             var users = GetUsers();
-            
-            var  membershipUserCollection = new MembershipUserCollection();
+
+            var membershipUserCollection = new MembershipUserCollection();
 
             foreach (FormsAuthenticationUser user in users)
             {
@@ -223,5 +224,81 @@ namespace X.Web.Security
         {
             throw new NotSupportedException();
         }
+
+        #endregion
+
+        #region ExtendedMembershipProvider
+
+        public override bool ConfirmAccount(string accountConfirmationToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override bool ConfirmAccount(string userName, string accountConfirmationToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override string CreateAccount(string userName, string password, bool requireConfirmationToken)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override string CreateUserAndAccount(string userName, string password, bool requireConfirmation, System.Collections.Generic.IDictionary<string, object> values)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override bool DeleteAccount(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override string GeneratePasswordResetToken(string userName, int tokenExpirationInMinutesFromNow)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override System.Collections.Generic.ICollection<OAuthAccountData> GetAccountsForUser(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DateTime GetCreateDate(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DateTime GetLastPasswordFailureDate(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override DateTime GetPasswordChangedDate(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override int GetPasswordFailuresSinceLastSuccess(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override int GetUserIdFromPasswordResetToken(string token)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override bool IsConfirmed(string userName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override bool ResetPasswordWithToken(string token, string newPassword)
+        {
+            throw new NotSupportedException();
+        }
+
+        #endregion
     }
 }
