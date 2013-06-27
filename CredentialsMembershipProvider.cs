@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Management.Instrumentation;
 using System.Web.Configuration;
 using System.Web.Security;
 using WebMatrix.WebData;
@@ -11,7 +12,7 @@ namespace X.Web.Security
         private FormsAuthPasswordFormat _passwordFormat;
 
         public const string ProviderName = "CredentialsMembershipProvider";
-        
+
         private FormsAuthenticationUser GetUser(string username)
         {
             var users = GetUsers();
@@ -43,11 +44,10 @@ namespace X.Web.Security
             return authenticationSection.Forms.Credentials.PasswordFormat;
         }
 
-        private static MembershipUser CreateMembershipUser(FormsAuthenticationUser user)
+        private MembershipUser CreateMembershipUser(FormsAuthenticationUser user)
         {
-            return new MembershipUser(ProviderName, user.Name, null, String.Empty, String.Empty, String.Empty, true,
-                                      false, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date,
-                                      DateTime.Now.Date);
+            MembershipCreateStatus status;
+            return CreateUser(user.Name, user.Password, String.Empty, String.Empty, String.Empty, true, null, out status);
         }
 
         #region MembershipProvider
@@ -94,24 +94,32 @@ namespace X.Web.Security
 
         public override string ApplicationName { get; set; }
 
+        [Obsolete("Method not supported")]
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-            throw new NotSupportedException();
+            return false;
         }
 
+        [Obsolete("Method not supported")]
         public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)
         {
-            throw new NotSupportedException();
+            return false;
         }
 
+        [Obsolete("Method not supported")]
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
-            throw new NotSupportedException();
+            status = MembershipCreateStatus.UserRejected;
+
+            return new MembershipUser(ProviderName, username, null, String.Empty, String.Empty, String.Empty, true,
+                                      false, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date, DateTime.Now.Date,
+                                      DateTime.Now.Date);
         }
 
+        [Obsolete("Method not supported")]
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
-            throw new NotSupportedException();
+            return false;
         }
 
         public override bool EnablePasswordReset
@@ -192,7 +200,29 @@ namespace X.Web.Security
 
         public override MembershipPasswordFormat PasswordFormat
         {
-            get { throw new NotSupportedException(); }
+            get
+            {
+                switch (GetPasswordFormat())
+                {
+                    case FormsAuthPasswordFormat.Clear:
+                        {
+                            return MembershipPasswordFormat.Clear;
+                        }
+                    case FormsAuthPasswordFormat.SHA1:
+                        {
+                            return MembershipPasswordFormat.Hashed;
+                            //case FormsAuthPasswordFormat.MD5: return MembershipPasswordFormat.Encrypted;
+                        }
+                    case FormsAuthPasswordFormat.MD5:
+                        {
+                            throw new NotSupportedException();
+                        }
+                    default:
+                        {
+                            throw new ArgumentOutOfRangeException();
+                        }
+                }
+            }
         }
 
         public override string PasswordStrengthRegularExpression
@@ -202,12 +232,12 @@ namespace X.Web.Security
 
         public override bool RequiresQuestionAndAnswer
         {
-            get { throw new NotSupportedException(); }
+            get { return false; }
         }
 
         public override bool RequiresUniqueEmail
         {
-            get { throw new NotSupportedException(); }
+            get { return true; }
         }
 
         public override string ResetPassword(string username, string answer)
@@ -220,6 +250,7 @@ namespace X.Web.Security
             throw new NotSupportedException();
         }
 
+        [Obsolete("Not supported")]
         public override void UpdateUser(MembershipUser user)
         {
             throw new NotSupportedException();
@@ -249,9 +280,10 @@ namespace X.Web.Security
             throw new NotSupportedException();
         }
 
+        [Obsolete("Not supported")]
         public override bool DeleteAccount(string userName)
         {
-            throw new NotSupportedException();
+            return false;
         }
 
         public override string GeneratePasswordResetToken(string userName, int tokenExpirationInMinutesFromNow)
@@ -266,7 +298,14 @@ namespace X.Web.Security
 
         public override DateTime GetCreateDate(string userName)
         {
-            throw new NotSupportedException();
+            var user = GetUser(userName);
+
+            if (user != null)
+            {
+                return DateTime.Now.Date;
+            }
+
+            throw new InstanceNotFoundException(String.Format("User with [{0}] user name not found.", userName));
         }
 
         public override DateTime GetLastPasswordFailureDate(string userName)
@@ -291,12 +330,14 @@ namespace X.Web.Security
 
         public override bool IsConfirmed(string userName)
         {
-            throw new NotSupportedException();
+            var user = GetUser(userName);
+            return user != null;
         }
 
+        [Obsolete("Method not supported")]
         public override bool ResetPasswordWithToken(string token, string newPassword)
         {
-            throw new NotSupportedException();
+            return false;
         }
 
         #endregion
