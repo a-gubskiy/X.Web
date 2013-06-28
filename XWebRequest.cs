@@ -1,99 +1,116 @@
 ﻿using System;
-using System.Text;
-using System.Net;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
 
 namespace X.Web
 {
     public class XWebRequest
     {
-        private WebRequest request;
-        private Stream dataStream;
+        public WebRequest Request { get; private set; }
 
-        private string status;
+        public string Status { get; set; }
 
-        public String Status
+        public XWebRequest(string url, string method = "GET")
+            : this(url, method, String.Empty)
         {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value;
-            }
         }
 
-        public MyWebRequest(string url)
+        public XWebRequest(string url, string method, string data)
         {
-            // Create a request using a URL that can receive a post.
-
-            request = WebRequest.Create(url);
+            Request = CreateRequest(url, method, data);
         }
 
-        public MyWebRequest(string url, string method)
-            : this(url)
+        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> collection)
         {
+            var list = collection as KeyValuePair<string, string>[] ?? collection.ToArray();
 
-            if (method.Equals("GET") || method.Equals("POST"))
+            var count = list.Count();
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < count; i++)
             {
-                // Set the Method property of the request to POST.
-                request.Method = method;
+                var item = list.ElementAt(i);
+                sb.AppendFormat("{0}={1}", item.Key, item.Value);
+
+                if (i + 1 < count)
+                {
+                    sb.Append("&");
+                }
             }
-            else
-            {
-                throw new Exception("Invalid Method Type");
-            }
+            
+            Request = CreateRequest(url, method, sb.ToString());
         }
 
-        public MyWebRequest(string url, string method, string data)
-            : this(url, method)
+        public static WebRequest CreateRequest(string url, string method, string data)
         {
+            var request = WebRequest.Create(url);
 
-            // Create POST data and convert it to a byte array.
-            string postData = data;
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+            if (!String.IsNullOrEmpty(data))
+            {
+                if (method.Equals("POST"))
+                {
+                    var bytes = Encoding.UTF8.GetBytes(data);
 
-            // Set the ContentType property of the WebRequest.
-            request.ContentType = "application/x-www-form-urlencoded";
+                    // Set the ContentType property of the WebRequest.
+                    request.ContentType = "application/x-www-form-urlencoded";
 
-            // Set the ContentLength property of the WebRequest.
-            request.ContentLength = byteArray.Length;
+                    // Set the ContentLength property of the WebRequest.
+                    request.ContentLength = bytes.Length;
 
-            // Get the request stream.
-            dataStream = request.GetRequestStream();
+                    // Get the request stream.
+                    var stream = request.GetRequestStream();
 
-            // Write the data to the request stream.
-            dataStream.Write(byteArray, 0, byteArray.Length);
+                    // Write the data to the request stream.
+                    stream.Write(bytes, 0, bytes.Length);
 
-            // Close the Stream object.
-            dataStream.Close();
+                    // Close the Stream object.
+                    stream.Close();
+                    return request;
+                }
 
+
+                if (method.Equals("GET"))
+                {
+                    url = String.Format("{0}?{1}", url, data);
+                    request = WebRequest.Create(url);
+                    request.Method = method;
+                }
+            }
+
+            request.Method = method;
+            return request;
         }
-
+        
         public string GetResponse()
         {
             // Get the original response.
-            WebResponse response = request.GetResponse();
+            var response = Request.GetResponse();
 
-            this.Status = ((HttpWebResponse)response).StatusDescription;
+            Status = ((HttpWebResponse)response).StatusDescription;
 
             // Get the stream containing all content returned by the requested server.
-            dataStream = response.GetResponseStream();
+            var stream = response.GetResponseStream();
 
             // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
+            if (stream == null)
+            {
+                return String.Empty;
+            }
+
+            var reader = new StreamReader(stream);
 
             // Read the content fully up to the end.
-            string responseFromServer = reader.ReadToEnd();
+            var data = reader.ReadToEnd();
 
             // Clean up the streams.
             reader.Close();
-            dataStream.Close();
+            stream.Close();
             response.Close();
 
-            return responseFromServer;
+            return data;
         }
-
     }
 }
