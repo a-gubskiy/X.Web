@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
@@ -25,9 +24,10 @@ namespace X.Web
 
         public String SmtpHost { get; set; }
         public int SmtpPort { get; set; }
+        public String SmtpUserName { get; set; }
+        public String SmtpPassword { get; set; }
+
         public String MailFrom { get; set; }
-        public String MailUserName { get; set; }
-        public String MailPassword { get; set; }
 
         public Metadata()
         {
@@ -44,14 +44,7 @@ namespace X.Web
                 {
                     try
                     {
-                        var configurationFileLocation = ConfigurationSettings.AppSettings["ConfigurationFileLocation"];
-
-                        if (String.IsNullOrEmpty(configurationFileLocation))
-                        {
-                            //Если опция не задана - значит бере мнастройки данные из локального фалйа
-                            configurationFileLocation = HttpContext.Current.Server.MapPath("~/web.config");
-                        }
-
+                        var configurationFileLocation = HttpContext.Current.Server.MapPath("~/web.config");
                         _current = Load(configurationFileLocation);
                     }
                     catch
@@ -81,8 +74,8 @@ namespace X.Web
                     FacebookApplicationSecret = GetField(configuration, "FacebookApplicationSecret", String.Empty),
                     SmtpHost = GetField(configuration, "SmtpHost", String.Empty),
                     MailFrom = GetField(configuration, "MailFrom", String.Empty),
-                    MailUserName = GetField(configuration, "MailUserName", String.Empty),
-                    MailPassword = GetField(configuration, "MailPassword", String.Empty),
+                    SmtpUserName = GetField(configuration, "SmtpUserName", String.Empty),
+                    SmtpPassword = GetField(configuration, "SmtpPassword", String.Empty),
                     SmtpPort = GetField(configuration, "SmtpPort", 25)
                 };
 
@@ -92,13 +85,13 @@ namespace X.Web
 
         #region GetField
 
-        private static int GetField(XDocument configuration, string fieldName, int defaultValue)
+        private static int GetField(XContainer configuration, string fieldName, int defaultValue)
         {
             int result;
             return int.TryParse(GetField(configuration, fieldName, defaultValue.ToString()), out result) ? result : defaultValue;
         }
 
-        private static string GetField(XDocument document, string fieldName, string defaultValue)
+        private static string GetField(XContainer document, string fieldName, string defaultValue)
         {
             try
             {
@@ -106,9 +99,7 @@ namespace X.Web
                 var appSettings = configuration.Elements("appSettings").First();
                 return appSettings.Elements().FirstOrDefault(n => n.Attribute("key").Value == fieldName).Attribute("value").Value;
             }
-            catch
-            {
-            }
+            catch { }
 
             return defaultValue;
         }
