@@ -30,5 +30,7 @@ namespace X.Web
         public const String Tel = "tel";
         public const String Time = "time";
         public const String Week = "week";
+
+        public const String Password = "password";
     }
 }
