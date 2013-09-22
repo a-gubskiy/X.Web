@@ -71,6 +71,7 @@
     <Compile Include="Control.cs" />
     <Compile Include="Metadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage.cs" />
     <Compile Include="XHandler.cs" />
     <Compile Include="XMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>

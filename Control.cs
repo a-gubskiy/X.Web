@@ -9,7 +9,7 @@ namespace X.Web
     {
         public const String FileUpload = "FileUpload";
         public const String FileImage = "FileImage";
-        public const String Map = "Address";
+        public const String Address = "Address";
         public const String Text = "Text";
         public const String Html = "Html";
         public const String Boolean = "Boolean";
@@ -17,8 +17,7 @@ namespace X.Web
         public const String DateTime = "DateTime";
         public const String Email = "Email";
         public const String Url = "Url";
-        //public const String YouTube = "YouTube";
-
+       
         //HTML 5 elements
         public const String Video = "video";
         public const String Color = "color";
