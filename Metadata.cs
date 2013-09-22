@@ -18,6 +18,9 @@ namespace X.Web
         public String FileStorageUrl { get; set; }
         public String FileStorageConnectionString { get; set; }
 
+        public String BlobContainerName { get; set; }
+
+
         public String FacebookLogo { get; set; }
         public String FacebookApplicationId { get; set; }
         public String FacebookApplicationSecret { get; set; }
@@ -69,6 +72,7 @@ namespace X.Web
                     DefaultKeywords = GetField(configuration, "DefaultKeywords", String.Empty),
                     FileStorageConnectionString = GetField(configuration, "FileStorageConnectionString", String.Empty),
                     FileStorageUrl = GetField(configuration, "FileStorageUrl", String.Empty),
+                    BlobContainerName = GetField(configuration, "BlobContainerName", String.Empty),
                     FacebookLogo = GetField(configuration, "FacebookLogo", String.Empty),
                     FacebookApplicationId = GetField(configuration, "FacebookApplicationId", String.Empty),
                     FacebookApplicationSecret = GetField(configuration, "FacebookApplicationSecret", String.Empty),
@@ -77,6 +81,7 @@ namespace X.Web
                     SmtpUserName = GetField(configuration, "SmtpUserName", String.Empty),
                     SmtpPassword = GetField(configuration, "SmtpPassword", String.Empty),
                     SmtpPort = GetField(configuration, "SmtpPort", 25)
+
                 };
 
 
