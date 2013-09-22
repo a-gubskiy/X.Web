@@ -32,6 +32,11 @@ namespace X.Web
 
         public String MailFrom { get; set; }
 
+        public bool IsDebuggingEnabled
+        {
+            get { return HttpContext.Current.IsDebuggingEnabled; }
+        }
+
         public Metadata()
         {
             SmtpPort = 25;
