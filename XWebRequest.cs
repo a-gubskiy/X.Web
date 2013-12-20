@@ -18,17 +18,17 @@ namespace X.Web
         {
         }
 
-        public XWebRequest(string url, string method, string data)
+        public XWebRequest(string url, string method, string data, IWebProxy proxy = null)
         {
-            Request = CreateRequest(url, method, data);
+            Request = CreateRequest(url, method, data, proxy);
         }
 
-        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> form)
+        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> form, IWebProxy proxy = null)
         {
-            Request = CreateRequest(url, method, form);
+            Request = CreateRequest(url, method, form, proxy);
         }
-        
-        public static WebRequest CreateRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> form)
+
+        public static WebRequest CreateRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> form, IWebProxy proxy = null)
         {
             var list = form as KeyValuePair<string, string>[] ?? form.ToArray();
 
@@ -46,13 +46,15 @@ namespace X.Web
                 }
             }
 
-            return CreateRequest(url, method, sb.ToString());
+            return CreateRequest(url, method, sb.ToString(), proxy);
         }
 
-        public static WebRequest CreateRequest(string url, string method, string data)
+        public static WebRequest CreateRequest(string url, string method, string data, IWebProxy proxy = null)
         {
             var request = WebRequest.Create(url);
             request.Method = method;
+            request.Proxy = proxy ?? request.Proxy;
+
 
             if (!String.IsNullOrEmpty(data))
             {
@@ -74,7 +76,6 @@ namespace X.Web
 
                     // Close the Stream object.
                     stream.Close();
-                    return request;
                 }
 
 
@@ -82,6 +83,7 @@ namespace X.Web
                 {
                     url = String.Format("{0}?{1}", url, data);
                     request = WebRequest.Create(url);
+                    request.Proxy = proxy ?? request.Proxy;
                 }
             }
 
