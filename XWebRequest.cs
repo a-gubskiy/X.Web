@@ -23,14 +23,14 @@ namespace X.Web
             Request = CreateRequest(url, method, data);
         }
 
-        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, object>> form)
+        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> form)
         {
             Request = CreateRequest(url, method, form);
         }
-
-        public static WebRequest CreateRequest(string url, string method, IEnumerable<KeyValuePair<string, object>> form)
+        
+        public static WebRequest CreateRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> form)
         {
-            var list = form as KeyValuePair<string, object>[] ?? form.ToArray();
+            var list = form as KeyValuePair<string, string>[] ?? form.ToArray();
 
             var count = list.Count();
             var sb = new StringBuilder();
