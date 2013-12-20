@@ -23,9 +23,14 @@ namespace X.Web
             Request = CreateRequest(url, method, data);
         }
 
-        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, string>> collection)
+        public XWebRequest(string url, string method, IEnumerable<KeyValuePair<string, object>> form)
         {
-            var list = collection as KeyValuePair<string, string>[] ?? collection.ToArray();
+            Request = CreateRequest(url, method, form);
+        }
+
+        public static WebRequest CreateRequest(string url, string method, IEnumerable<KeyValuePair<string, object>> form)
+        {
+            var list = form as KeyValuePair<string, object>[] ?? form.ToArray();
 
             var count = list.Count();
             var sb = new StringBuilder();
@@ -40,20 +45,21 @@ namespace X.Web
                     sb.Append("&");
                 }
             }
-            
-            Request = CreateRequest(url, method, sb.ToString());
+
+            return CreateRequest(url, method, sb.ToString());
         }
 
         public static WebRequest CreateRequest(string url, string method, string data)
         {
             var request = WebRequest.Create(url);
+            request.Method = method;
 
             if (!String.IsNullOrEmpty(data))
             {
                 if (method.Equals("POST"))
                 {
                     var bytes = Encoding.UTF8.GetBytes(data);
-                    request.Method = method;
+
                     // Set the ContentType property of the WebRequest.
                     request.ContentType = "application/x-www-form-urlencoded";
 
@@ -76,14 +82,12 @@ namespace X.Web
                 {
                     url = String.Format("{0}?{1}", url, data);
                     request = WebRequest.Create(url);
-                    request.Method = method;
                 }
             }
 
-            request.Method = method;
             return request;
         }
-        
+
         public string GetResponse()
         {
             // Get the original response.
