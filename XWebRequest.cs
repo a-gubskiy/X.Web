@@ -53,7 +53,7 @@ namespace X.Web
                 if (method.Equals("POST"))
                 {
                     var bytes = Encoding.UTF8.GetBytes(data);
-
+                    request.Method = method;
                     // Set the ContentType property of the WebRequest.
                     request.ContentType = "application/x-www-form-urlencoded";
 
