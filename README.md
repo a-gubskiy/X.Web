@@ -7,6 +7,7 @@ Library for extend ASP.NET functionality.
 - XRequest class
 - XPage class
 - XMasterPage class
+- XWebRequest
 
 X.Web is a part of X-Framework library.
 
