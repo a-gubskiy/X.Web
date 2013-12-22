@@ -20,7 +20,6 @@ namespace X.Web
 
         public String BlobContainerName { get; set; }
 
-
         public String FacebookLogo { get; set; }
         public String FacebookApplicationId { get; set; }
         public String FacebookApplicationSecret { get; set; }
@@ -29,8 +28,12 @@ namespace X.Web
         public int SmtpPort { get; set; }
         public String SmtpUserName { get; set; }
         public String SmtpPassword { get; set; }
-
         public String MailFrom { get; set; }
+
+        /// <summary>
+        /// Items per page for paging
+        /// </summary>
+        public int PageSize { get; set; }
 
         public bool IsDebuggingEnabled
         {
@@ -40,36 +43,32 @@ namespace X.Web
         public Metadata()
         {
             SmtpPort = 25;
+            PageSize = 15;
+        }
+
+        #region Current
+
+        public static void Initialize(Metadata metadata)
+        {
+            _current = metadata;
         }
 
         private static Metadata _current;
 
         public static Metadata Current
         {
-            get
-            {
-                if (_current == null)
-                {
-                    try
-                    {
-                        var configurationFileLocation = HttpContext.Current.Server.MapPath("~/web.config");
-                        _current = Load(configurationFileLocation);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
-
-                return _current;
-            }
+            get { return _current ?? (_current = Load(HttpContext.Current.Server.MapPath("~/web.config"))); }
         }
+
+        #endregion
 
         public static Metadata Load(string configurationFileLocation)
         {
-            var configuration = XDocument.Load(configurationFileLocation);
+            try
+            {
+                var configuration = XDocument.Load(configurationFileLocation);
 
-            var metaData = new Metadata
+                var instance = new Metadata
                 {
                     Title = GetField(configuration, "Title", String.Empty),
                     WebsiteUrl = GetField(configuration, "WebsiteUrl", String.Empty),
@@ -85,12 +84,17 @@ namespace X.Web
                     MailFrom = GetField(configuration, "MailFrom", String.Empty),
                     SmtpUserName = GetField(configuration, "SmtpUserName", String.Empty),
                     SmtpPassword = GetField(configuration, "SmtpPassword", String.Empty),
-                    SmtpPort = GetField(configuration, "SmtpPort", 25)
-
+                    SmtpPort = GetField(configuration, "SmtpPort", 25),
+                    PageSize = GetField(configuration, "PageSize", 15)
                 };
 
 
-            return metaData;
+                return instance;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #region GetField
