@@ -4,9 +4,9 @@ using System.Web.Configuration;
 using System.Web.Security;
 using WebMatrix.WebData;
 
-namespace X.Web.Security
+namespace X.Web
 {
-    public class CredentialsMembershipProvider : ExtendedMembershipProvider //MembershipProvider, 
+    public class CredentialsMembershipProvider : ExtendedMembershipProvider
     {
         private FormsAuthenticationUserCollection _users;
         private FormsAuthPasswordFormat _passwordFormat;
