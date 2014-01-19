@@ -11,8 +11,12 @@ namespace X.Web
     /// <summary>
     /// Deprecated code
     /// </summary>
-    public abstract class XPage : Page
+    public abstract class XPage : Page, IWebPage
     {
+        public new virtual string Title { get; set; }
+        public virtual string Keywords { get; set; }
+        public virtual string Description { get; set; }
+
         /// <summary>
         /// Advanced request with safe parameter gettin functions
         /// </summary>
@@ -46,14 +50,7 @@ namespace X.Web
                 Response.Cache.VaryByParams[p] = true;
             }
         }
-
-        /// <summary>
-        /// Set page title
-        /// </summary>
-        /// <param name="title">Page title</param>
-        [Obsolete("SetTitle is deprecated.")]
-        protected abstract void SetTitle(string title);
-
+        
         #region Canonical Url
 
         private bool _canonicalUrlAdded = false;
@@ -95,18 +92,17 @@ namespace X.Web
 
         #endregion
 
-        #region Culture (deprecated)
-
-        private const string SessionLanguageKey = "session_language";
-
         /// <summary>
         /// Url argument - lng, default - null
         /// </summary>
-        [Obsolete("CurrentCulture is deprecated.")]
         public virtual CultureInfo CurrentCulture
         {
             get { return XPage.GetCurrentCulture(this, this.DefaultCulture, this.AllowedCultures, true); }
         }
+
+        #region Culture (deprecated)
+
+        private const string SessionLanguageKey = "session_language";
 
         /// <summary>
         /// By default - all cultures are allowed

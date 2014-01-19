@@ -30,6 +30,8 @@ namespace X.Web
         public String SmtpPassword { get; set; }
         public String MailFrom { get; set; }
 
+        public String SupportEmail { get; set; }
+
         /// <summary>
         /// Items per page for paging
         /// </summary>
@@ -84,6 +86,7 @@ namespace X.Web
                     MailFrom = GetField(configuration, "MailFrom", String.Empty),
                     SmtpUserName = GetField(configuration, "SmtpUserName", String.Empty),
                     SmtpPassword = GetField(configuration, "SmtpPassword", String.Empty),
+                    SupportEmail = GetField(configuration, "SupportEmail", String.Empty),
                     SmtpPort = GetField(configuration, "SmtpPort", 25),
                     PageSize = GetField(configuration, "PageSize", 15)
                 };
