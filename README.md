@@ -39,3 +39,7 @@ Inspired by http://leastprivilege.com/2005/07/27/asp-net-membershipprovider-for-
         <add name="CredentialsMembershipProvider" type="X.Web.Security.CredentialsMembershipProvider" />
       </providers>
     </membership>
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ernado-x/x.web/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
