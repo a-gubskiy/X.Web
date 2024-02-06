@@ -2,27 +2,26 @@
 using System.Web.Routing;
 using System.Web.SessionState;
 
-namespace X.Web
+namespace X.Web;
+
+public abstract class XHandler : IHttpHandler, IRouteHandler, IRequiresSessionState
 {
-    public abstract class XHandler : IHttpHandler, IRouteHandler, IRequiresSessionState
+    public virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
     {
-        public virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
-        {
-            return this;
-        }
+        return this;
+    }
 
-        public virtual bool IsReusable
-        {
-            get { return true; }
-        }
+    public virtual bool IsReusable
+    {
+        get { return true; }
+    }
 
-        protected HttpContext Context { get; private set; }
-        protected XRequest XRequest { get; private set; }
+    protected HttpContext Context { get; private set; }
+    protected XRequest XRequest { get; private set; }
 
-        public virtual void ProcessRequest(HttpContext context)
-        {
-            Context = context;
-            XRequest = new XRequest(context.Request, null);
-        }
+    public virtual void ProcessRequest(HttpContext context)
+    {
+        Context = context;
+        XRequest = new XRequest(context.Request, null);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace X.Web
+namespace X.Web;
+
+public interface IWebPage
 {
-    public interface IWebPage
-    {
-        String Title { get; set; }
-        String Keywords { get; set; }
-        String Description { get; set; }
-    }
+    String Title { get; set; }
+    String Keywords { get; set; }
+    String Description { get; set; }
 }
