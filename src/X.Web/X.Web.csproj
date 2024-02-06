@@ -23,6 +23,17 @@
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>Andrew Gubskiy</Authors>
+    <Version> 3.0.2.100</Version>
+    <Title>X.Web</Title>
+    <PackageId>xweb</PackageId>
+    <Company>Andrew Gubskiy</Company>
+    <Product>X.Web</Product>
+    <PackageProjectUrl>https://github.com/ernado-x/X.Web</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
@@ -61,6 +72,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.1.1" />
     <PackageReference Include="Microsoft.AspNet.Razor" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.1.1" />
@@ -68,5 +85,11 @@
     <PackageReference Include="Microsoft.AspNet.WebPages.WebData" Version="3.1.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>
