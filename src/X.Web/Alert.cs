@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace X.Web
+namespace X.Web;
+
+public enum Alert
 {
-    public enum Alert
-    {
-        Success,
-        Info,
-        Warning,
-        Danger
-    }
+    Success,
+    Info,
+    Warning,
+    Danger
 }
