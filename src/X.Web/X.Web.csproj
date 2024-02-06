@@ -12,7 +12,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>3.0.3.200</ApplicationVersion>
+    <ApplicationVersion>3.0.3.300</ApplicationVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -26,7 +26,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>Andrew Gubskiy</Authors>
-    <Version>3.0.3.200</Version>
+    <Version>3.0.3.300</Version>
     <Title>X.Web</Title>
     <PackageId>xweb</PackageId>
     <Company>Andrew Gubskiy</Company>
