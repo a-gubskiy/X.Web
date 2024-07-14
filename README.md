@@ -1,43 +1,19 @@
 # X.Web
 
-Library for extend ASP.NET functionality.
-- Metadata class
-- XController class
-- XRequest class
-- XPage class
-- XMasterPage class
-- XWebRequest
+## Archived Notice
 
-X.Web is a part of X-Framework library.
+This library is **outdated and no longer supported**. The current update was solely implemented to address security vulnerabilities and remove unsupported code for compatibility with modern .NET platform.
 
-You can install X.Web from NuGet - http://nuget.org/packages/xweb/
+### Overview
 
+While this library has served its purpose in the past, it is now considered deprecated. We strongly recommend users to migrate to more current and actively maintained alternatives.
 
-## Usage of X.Web.Security.CredentialsMembershipProvider
+### Changes in the Latest Update
 
-Membership provider that allow load user information from web.config file.
-
-Inspired by http://leastprivilege.com/2005/07/27/asp-net-membershipprovider-for-web-config/
-
-### Example
+- **Security Fixes:** Resolved known security vulnerabilities in dependencies.
+- **Code Cleanup:** Removed unsupported and deprecated code to ensure basic compatibility with the latest .NET framework.
 
 
-```xml
-<authentication mode="Forms">
-  <forms name="auth" loginUrl="~/System/Login.aspx" protection="All" path="/" timeout="30">
-    <credentials passwordFormat="Clear">
-      <user name="u1" password="p1"/>
-      <user name="u2" password="p2"/>
-      <user name="u3" password="p3"/>
-    </credentials>
-  </forms>
-</authentication>
+### Thank You
 
-
-<membership defaultProvider="CredentialsMembershipProvider" userIsOnlineTimeWindow="15">
-  <providers>
-    <clear />
-    <add name="CredentialsMembershipProvider" type="X.Web.Security.CredentialsMembershipProvider" />
-  </providers>
-</membership>
-```
+We appreciate the support from our community over the years. While this library will no longer receive updates, we encourage you to explore and contribute to other active projects within the ecosystem.
