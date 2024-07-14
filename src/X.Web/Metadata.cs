@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace X.Web;
 
@@ -36,11 +37,7 @@ public class Metadata
     /// Items per page for paging
     /// </summary>
     public int PageSize { get; set; }
-
-    public bool IsDebuggingEnabled
-    {
-        get { return HttpContext.Current.IsDebuggingEnabled; }
-    }
+    
 
     public Metadata()
     {
@@ -48,22 +45,7 @@ public class Metadata
         PageSize = 15;
     }
 
-    #region Current
-
-    public static void Initialize(Metadata metadata)
-    {
-        _current = metadata;
-    }
-
-    private static Metadata _current;
-
-    public static Metadata Current
-    {
-        get { return _current ?? (_current = Load(HttpContext.Current.Server.MapPath("~/web.config"))); }
-    }
-
-    #endregion
-
+   
     public static Metadata Load(string configurationFileLocation)
     {
         try
@@ -105,6 +87,7 @@ public class Metadata
     private static int GetField(XContainer configuration, string fieldName, int defaultValue)
     {
         int result;
+        
         return int.TryParse(GetField(configuration, fieldName, defaultValue.ToString()), out result) ? result : defaultValue;
     }
 
@@ -114,9 +97,18 @@ public class Metadata
         {
             var configuration = document.Elements("configuration").First();
             var appSettings = configuration.Elements("appSettings").First();
-            return appSettings.Elements().FirstOrDefault(n => n.Attribute("key").Value == fieldName).Attribute("value").Value;
+
+            var result = appSettings
+                .Elements()
+                .FirstOrDefault(n => n.Attribute("key").Value == fieldName)
+                .Attribute("value").Value;
+            
+            return result;
         }
-        catch { }
+        catch
+        {
+            // ignore
+        }
 
         return defaultValue;
     }

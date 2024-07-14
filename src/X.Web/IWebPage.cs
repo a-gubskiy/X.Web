@@ -1,10 +1,14 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace X.Web;
 
+[PublicAPI]
 public interface IWebPage
 {
-    String Title { get; set; }
-    String Keywords { get; set; }
-    String Description { get; set; }
+    string Title { get; set; }
+    
+    string Keywords { get; set; }
+    
+    string Description { get; set; }
 }

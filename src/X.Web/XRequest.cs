@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
-using System.Web.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace X.Web;
 
@@ -108,10 +108,28 @@ public class XRequest
 
         return false;
     }
-        
-    private string GetValueFromRequest(string name)
+    
+    public static string GetParamValue(HttpRequest request, string paramName)
     {
-        var requestParam = Request.Params[name];
+        // Check query string parameters
+        if (request.Query.ContainsKey(paramName))
+        {
+            return request.Query[paramName].ToString();
+        }
+
+        // Check form data
+        if (request.HasFormContentType && request.Form.ContainsKey(paramName))
+        {
+            return request.Form[paramName].ToString();
+        }
+
+        // Parameter not found
+        return null;
+    }
+        
+    protected string GetValueFromRequest(string name)
+    {
+        var requestParam = GetParamValue(Request, name);
 
         if (!String.IsNullOrEmpty(requestParam))
         {

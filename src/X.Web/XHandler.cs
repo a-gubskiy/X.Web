@@ -1,22 +1,14 @@
-﻿using System.Web;
-using System.Web.Routing;
-using System.Web.SessionState;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace X.Web;
 
-public abstract class XHandler : IHttpHandler, IRouteHandler, IRequiresSessionState
+public abstract class XHandler : IRouteHandler
 {
-    public virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
-    {
-        return this;
-    }
-
-    public virtual bool IsReusable
-    {
-        get { return true; }
-    }
+    public virtual bool IsReusable => true;
 
     protected HttpContext Context { get; private set; }
+    
     protected XRequest XRequest { get; private set; }
 
     public virtual void ProcessRequest(HttpContext context)
@@ -24,4 +16,6 @@ public abstract class XHandler : IHttpHandler, IRouteHandler, IRequiresSessionSt
         Context = context;
         XRequest = new XRequest(context.Request, null);
     }
+
+    public abstract RequestDelegate GetRequestHandler(HttpContext httpContext, RouteData routeData);
 }
