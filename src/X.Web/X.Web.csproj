@@ -1,18 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>default</LangVersion>
+        <Title>X.Web</Title>
+        <Description>Library for extend ASP.NET functionality. Discontinued.</Description>
+
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ernado-x/X.Web.git</RepositoryUrl>
+
+        <Authors>Andrew Gubskiy</Authors>
+        <Company>Ukrainian .NET Developer Community</Company>
 
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>icon.png</PackageIcon>
+        <PackageTags>ASP.NET Web</PackageTags>
         <PackageLicenseUrl>https://raw.githubusercontent.com/ernado-x/X.Text/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/ernado-x/X.Text</PackageProjectUrl>
         <Copyright>Andrew Gubskiy © 2024</Copyright>
         <PackageVersion>3.1.1</PackageVersion>
+
+        <Version>3.1.1</Version>
+        <AssemblyVersion>3.1.1</AssemblyVersion>
+        <FileVersion>3.1.1</FileVersion>
+        <LangVersion>default</LangVersion>
         <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <None Include="icon.png" Pack="True" PackagePath=""/>
         <None Include="../../README.md" Pack="true" PackagePath=""/>
