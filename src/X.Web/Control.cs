@@ -1,10 +1,12 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace X.Web;
 
 /// <summary>
 /// Web controls
 /// </summary>
+[PublicAPI]
 public static class Control
 {
     public const String FileUpload = "FileUpload";
