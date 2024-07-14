@@ -1,13 +1,12 @@
-﻿using System;
-using System.Globalization;
-using System.Threading;
+﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace X.Web;
 
 /// <summary>
-/// 
+/// Web page controller
 /// </summary>
+[PublicAPI]
 public abstract class XController : Controller, IWebPage
 {
     /// <summary>
@@ -35,15 +34,5 @@ public abstract class XController : Controller, IWebPage
     {
         get => ViewBag.Description;
         set => ViewBag.Description = value;
-    }
-
-    public CultureInfo CurrentCulture { get; protected set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected virtual void DetectCulture()
-    {
-        CurrentCulture = Thread.CurrentThread.CurrentCulture;
     }
 }

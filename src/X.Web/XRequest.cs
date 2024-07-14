@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
@@ -13,6 +14,7 @@ namespace X.Web;
 /// <summary>
 /// 
 /// </summary>
+[PublicAPI]
 public class XRequest
 {
     public XRequest(HttpRequest request, RouteData routeData)
@@ -26,8 +28,6 @@ public class XRequest
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public RouteData RouteData { get; set; }
-
-    #region GetParameter(...)
         
     public string GetParameter(string name, string defaultValue)
     {
@@ -131,7 +131,7 @@ public class XRequest
     {
         var requestParam = GetParamValue(Request, name);
 
-        if (!String.IsNullOrEmpty(requestParam))
+        if (!string.IsNullOrEmpty(requestParam))
         {
             return requestParam;
         }
@@ -148,9 +148,7 @@ public class XRequest
 
         return String.Empty;
     }
-
-    #endregion
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -193,8 +191,7 @@ public class XRequest
         var request = WebRequest.Create(url);
         request.Method = method;
         request.Proxy = proxy ?? request.Proxy;
-
-
+        
         if (!String.IsNullOrEmpty(data))
         {
             if (method.Equals("POST"))
@@ -217,10 +214,9 @@ public class XRequest
                 stream.Close();
             }
 
-
             if (method.Equals("GET"))
             {
-                url = String.Format("{0}?{1}", url, data);
+                url = $"{url}?{data}";
                 request = WebRequest.Create(url);
                 request.Proxy = proxy ?? request.Proxy;
             }

@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
 namespace X.Web;
 
+[PublicAPI]
 public abstract class XHandler : IRouteHandler
 {
     public virtual bool IsReusable => true;
 
-    protected HttpContext Context { get; private set; }
+    protected HttpContext Context { get; set; }
     
-    protected XRequest XRequest { get; private set; }
+    protected XRequest XRequest { get; set; }
 
     public virtual void ProcessRequest(HttpContext context)
     {
