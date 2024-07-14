@@ -10,6 +10,7 @@
         <Authors>Andrew Gubskiy</Authors>
         <Company>Ukrainian .NET Developer Community</Company>
 
+        <PackageId>xweb</PackageId>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>icon.png</PackageIcon>
